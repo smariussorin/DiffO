@@ -8,10 +8,12 @@ namespace DiffO
 {
     public interface IDiffObject
     {
-        void Add(string key, IEnumerable<IDifference> difference);
+        void Add<T>(string key, IEnumerable<Difference<T>> difference);
 
-        IEnumerable<IDifference> Get(string key);
+        //void Add(string key, IEnumerable<Difference> difference);
 
-        IDifference CreateDifference<T>(string propName, DifferenceType type, T newValue, T oldValue);
+        IEnumerable<Difference<T>> Get<T>(string key);
+
+        Difference<T> CreateDifference<T>(string propName, DifferenceType type, T newValue, T oldValue);
     }
 }

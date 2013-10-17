@@ -8,30 +8,35 @@ namespace DiffO
 {
     public abstract class DiffObject : IDiffObject
     {
-        private Dictionary<string, IEnumerable<IDifference>> Differences { get; set; }
+        private Dictionary<string, IEnumerable<Difference>> Differences { get; set; }
 
         protected DiffObject()
         {
-            Differences = new Dictionary<string, IEnumerable<IDifference>>();
+            Differences = new Dictionary<string, IEnumerable<Difference>>();
         }
 
-        public void Add(string key, IEnumerable<IDifference> difference)
+        public void Add<T>(string key, IEnumerable<Difference<T>> difference)
         {
             Differences.Add(key, difference);
         }
 
-        public IEnumerable<IDifference> Get(string key)
+        public void Add(string key, IEnumerable<Difference> difference)
         {
-            IEnumerable<IDifference> difference;
+            Differences.Add(key, difference);
+        }
+
+        public IEnumerable<Difference<T>> Get<T>(string key)
+        {
+            IEnumerable<Difference> difference;
 
             if (Differences.TryGetValue(key, out difference))
             {
-                return difference;
+                return difference as IEnumerable<Difference<T>>;
             }
             return null;
         }
 
-        public IDifference CreateDifference<T>(string propName, DifferenceType type, T newValue, T oldValue)
+        public Difference<T> CreateDifference<T>(string propName, DifferenceType type, T newValue, T oldValue)
         {
             return new Difference<T>
                        {

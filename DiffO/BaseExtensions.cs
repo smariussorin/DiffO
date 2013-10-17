@@ -46,7 +46,7 @@ namespace DiffO
                             var currentList = currentEnumerable as List<object> ?? currentEnumerable.ToList();
                             var previousList = previousEnumerable as List<object> ?? previousEnumerable.ToList();
 
-                            var diffList = new List<IDifference>();
+                            var diffList = new List<Difference<List<object>>>();
 
                             var diff = current.CreateDifference(propName, DifferenceType.Added, currentList.Except(previousList).ToList(), null);
 
@@ -83,7 +83,7 @@ namespace DiffO
                     {
                         var diff = current.CreateDifference(propName, type, currentValue, previousValue);
 
-                        current.Add(propName, new List<IDifference> { diff });
+                        current.Add(propName, new List<Difference<object>> { diff });
                     }
                 }
             }

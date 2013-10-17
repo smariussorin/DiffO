@@ -11,31 +11,28 @@ namespace DiffO
 {
     public static class HtmlExtensions
     {
-        public static TKey GetListPropertyDiff<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression, DifferenceType type) where TKey : class
+        public static List<object> GetListPropertyDiff<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression, DifferenceType type) where TKey : class 
         {
             var propertyName = ExpressionHelper.GetExpressionText(expression);
             var model = helper.ViewData.Model as IDiffObject;
 
             if (model != null)
             {
-                var differences = model.Get(propertyName) as List<Difference<object>>;
+                var differences = model.Get<List<object>>(propertyName);
 
                 if (differences != null)
                 {
                     switch (type)
                     {
                         case DifferenceType.Removed:
-                            return differences.Where(x => x.Type == type).Select(x => x.OldValue) as TKey;
+                            return differences.Where(x => x.Type == type).Select(x => x.OldValue).FirstOrDefault();
                         case DifferenceType.Added:
-                            return differences.Where(x => x.Type == type).Select(x => x.NewValue) as TKey;
+                            return differences.Where(x => x.Type == type).Select(x => x.NewValue).FirstOrDefault();
                     }
                 }
+                return null;
             }
-            else
-            {
-                throw new Exception("Model does not implement IDiffOject");
-            }
-            return null;
+            throw new Exception("Model does not implement IDiffOject");
         }
 
         public static DifferenceType GetPropertyDiffType<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression)
@@ -45,11 +42,11 @@ namespace DiffO
 
             if (model != null)
             {
-                var differences = model.Get(propertyName);
+                var differences = model.Get<object>(propertyName);
                     
                 if (differences != null)
                 {
-                    var difference = differences.FirstOrDefault() as Difference<object>;
+                    var difference = differences.FirstOrDefault();
 
                     if (difference != null)
                     {

@@ -2,9 +2,9 @@
 @using DiffO
 
 @{
-    var removedBirds = Html.GetListPropertyDiff(x => x.Birds, DifferenceType.Removed);
+    var removedBirds = Html.GetListPropertyDiff(x => x.Birds, DifferenceType.Removed) ?? new List<object>();
 
-    var addedBirds = Html.GetListPropertyDiff(x => x.Birds, DifferenceType.Added);
+    var addedBirds = Html.GetListPropertyDiff(x => x.Birds, DifferenceType.Added) ?? new List<object>();
 }
 
 <ul>
@@ -18,7 +18,11 @@
         <ul>
             @foreach(var bird in Model.Birds)
             {
-                <li>@Html.Partial("_Bird", bird)</li>
+                <li style="background-color: @(addedBirds.Any(x => x.Equals(bird)) ? "green" : "")">@Html.Partial("_Bird", bird)</li>
+            }
+            @foreach (var bird in removedBirds)
+            {
+                <li style="background-color: red">@Html.Partial("_Bird", bird)</li>
             }
         </ul>
     </li>
