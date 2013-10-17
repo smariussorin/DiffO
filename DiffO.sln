@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiffO", "DiffO\DiffO.csproj", "{02313359-A98E-4889-AFFE-042E2F2EA92D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiffO.Demo", "DiffO.Demo\DiffO.Demo.csproj", "{B71C246D-0A77-4E68-A068-9397144C86B6}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{02313359-A98E-4889-AFFE-042E2F2EA92D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02313359-A98E-4889-AFFE-042E2F2EA92D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02313359-A98E-4889-AFFE-042E2F2EA92D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02313359-A98E-4889-AFFE-042E2F2EA92D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B71C246D-0A77-4E68-A068-9397144C86B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B71C246D-0A77-4E68-A068-9397144C86B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B71C246D-0A77-4E68-A068-9397144C86B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B71C246D-0A77-4E68-A068-9397144C86B6}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
