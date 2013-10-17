@@ -8,28 +8,39 @@ namespace DiffO
 {
     public abstract class DiffObject : IDiffObject
     {
-        private Dictionary<string, IDifference> Differences { get; set; }
+        private Dictionary<string, IEnumerable<IDifference>> Differences { get; set; }
 
-        public DiffObject()
+        protected DiffObject()
         {
-            Differences = new Dictionary<string, IDifference>();
+            Differences = new Dictionary<string, IEnumerable<IDifference>>();
         }
-        public void Add(string key, IDifference difference)
+
+        public void Add(string key, IEnumerable<IDifference> difference)
         {
             Differences.Add(key, difference);
         }
 
-        public IDifference Get(string key)
+        public IEnumerable<IDifference> Get(string key)
         {
-            IDifference difference;
+            IEnumerable<IDifference> difference;
+
             if (Differences.TryGetValue(key, out difference))
             {
                 return difference;
             }
-            else
-            {
-                throw new ArgumentException("key does not implement DiffObject or was not found in the dictionary", "key");
-            }
+            return null;
+        }
+
+        public IDifference CreateDifference<T>(string propName, DifferenceType type, T newValue, T oldValue)
+        {
+            return new Difference<T>
+                       {
+                           NewValue = newValue,
+                           OldValue = oldValue,
+                           Type = type,
+                           Prop = propName
+                       };
+
         }
     }
 }

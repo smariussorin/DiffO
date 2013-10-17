@@ -1,0 +1,8 @@
+﻿@model DiffO.Demo.Models.BearModel
+@using DiffO
+
+<ul>
+    <li style="background-color: @Html.GetPropertyDiffColor(x => x.Uid)">@Model.Uid</li>
+    <li style="background-color: @Html.GetPropertyDiffColor(x => x.Color)">@Model.Color</li>
+    <li style="background-color: @Html.GetPropertyDiffColor(x => x.Name)">@Model.Name</li>
+</ul>

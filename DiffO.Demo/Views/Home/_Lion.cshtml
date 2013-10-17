@@ -1,0 +1,10 @@
+﻿@model DiffO.Demo.Models.LionModel
+@using DiffO
+
+<ul>
+    <li style="background-color: @Html.GetPropertyDiffColor(x => x.Name)">@Model.Name</li>
+    @if (Model.Child != null)
+    {
+        <li>@Html.Partial("_Lion", Model.Child)</li>
+    }
+</ul>

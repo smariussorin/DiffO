@@ -1,0 +1,25 @@
+﻿@model DiffO.Demo.Models.ZooModel
+@using DiffO
+
+@{
+    var removedBirds = Html.GetListPropertyDiff(x => x.Birds, DifferenceType.Removed);
+
+    var addedBirds = Html.GetListPropertyDiff(x => x.Birds, DifferenceType.Added);
+}
+
+<ul>
+    <li>
+        @Html.Partial("_Bear", Model.Bear)
+    </li>
+    <li>
+        @Html.Partial("_Lion", Model.Lion)
+    </li>
+    <li>
+        <ul>
+            @foreach(var bird in Model.Birds)
+            {
+                <li>@Html.Partial("_Bird", bird)</li>
+            }
+        </ul>
+    </li>
+</ul>

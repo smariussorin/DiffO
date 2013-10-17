@@ -55,7 +55,6 @@ namespace DiffO.Demo.Controllers
             {
                 Bear = new BearModel
                 {
-                    Color = "White",
                     Name = "The Polar Bear",
                     Uid = 123
                 },
@@ -101,8 +100,11 @@ namespace DiffO.Demo.Controllers
 
             bucharestZoo.CompareTo(clujZoo);
 
-
-            return View();
+            return View(new DemoViewModel
+                            {
+                                Bucharest = bucharestZoo,
+                                Cluj = clujZoo
+                            });
         }
 
     }

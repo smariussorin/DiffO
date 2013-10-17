@@ -5,6 +5,12 @@ using System.Web;
 
 namespace DiffO.Demo.Models
 {
+    public class DemoViewModel
+    {
+        public ZooModel Bucharest { get; set; }
+        public ZooModel Cluj { get; set; }
+    }
+
     public class ZooModel : DiffObject
     {
         public LionModel Lion { get; set; }
@@ -33,19 +39,15 @@ namespace DiffO.Demo.Models
 
         public override bool Equals(Object obj)
         {
-            BirdModel bird = obj as BirdModel;
-            if (bird == null)
-            {
-                return false;
-            }
-            return Equals(bird);
+            var bird = obj as BirdModel;
+            return bird != null && Equals(bird);
         }
 
         public bool Equals(BirdModel bird)
         {
-            return string.Compare(bird.Color, Color) == 0 &&
-                   string.Compare(bird.Name, Name) == 0 &&
-                   string.Compare(bird.Nest.Type, Nest.Type) == 0;
+            return String.CompareOrdinal(bird.Color, Color) == 0 &&
+                   String.CompareOrdinal(bird.Name, Name) == 0 &&
+                   String.CompareOrdinal(bird.Nest.Type, Nest.Type) == 0;
         }
 
         public override int GetHashCode()

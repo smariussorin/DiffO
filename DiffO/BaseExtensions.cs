@@ -21,9 +21,9 @@ namespace DiffO
 
                 if (prop.PropertyType != typeof(string) && prop.PropertyType.IsClass)
                 {
-                    var currentList = currentValue as IEnumerable<object>;
+                    var currentEnumerable = currentValue as IEnumerable<object>;
 
-                    if (currentList == null)
+                    if (currentEnumerable == null)
                     {
                         var currentValue2 = currentValue as IDiffObject;
 
@@ -39,35 +39,51 @@ namespace DiffO
                     }
                     else
                     {
-                        var previousList = previousValue as IEnumerable<object>;
+                        var previousEnumerable = previousValue as IEnumerable<object>;
 
-                        if (previousList != null)
+                        if (previousEnumerable != null)
                         {
-                            var v = new Difference
-                            {
-                                Prop = propName,
-                                ValA = currentList.Except(previousList).ToList(),
-                                ValB = previousList.Except(currentList).ToList()
-                            };
+                            var currentList = currentEnumerable as List<object> ?? currentEnumerable.ToList();
+                            var previousList = previousEnumerable as List<object> ?? previousEnumerable.ToList();
 
-                            current.Add(propName, v);
+                            var diffList = new List<IDifference>();
+
+                            var diff = current.CreateDifference(propName, DifferenceType.Added, currentList.Except(previousList).ToList(), null);
+
+                            diffList.Add(diff);
+
+                            diff = current.CreateDifference(propName, DifferenceType.Removed, null, previousList.Except(currentList).ToList());
+
+                            diffList.Add(diff);
+
+                            current.Add(propName, diffList);
                         }
                     }
                 }
                 else
                 {
-                    var v = new Difference
-                    {
-                        Prop = propName,
-                        ValA = currentValue,
-                        ValB = previousValue
-                    };
+                    var type = DifferenceType.None;
 
-                    if ((v.ValA == null && v.ValB != null) ||
-                        (v.ValA != null && v.ValB == null) ||
-                        (v.ValA != null && v.ValB != null && !v.ValA.Equals(v.ValB)))
+                    if (currentValue == null && previousValue != null)
                     {
-                        current.Add(propName, v);
+                        type = DifferenceType.Removed;
+                    }
+
+                    if (currentValue != null && previousValue == null)
+                    {
+                        type = DifferenceType.Added;
+                    }
+
+                    if (currentValue != null && previousValue != null && !currentValue.Equals(previousValue))
+                    {
+                        type = DifferenceType.Modified;
+                    }
+
+                    if (type != DifferenceType.None)
+                    {
+                        var diff = current.CreateDifference(propName, type, currentValue, previousValue);
+
+                        current.Add(propName, new List<IDifference> { diff });
                     }
                 }
             }

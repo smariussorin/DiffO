@@ -1,5 +1,10 @@
-﻿@{
+﻿@model DiffO.Demo.Models.DemoViewModel
+@{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+
+@Html.Partial("_Zoo", Model.Bucharest)
+
+@Html.Partial("_Zoo", Model.Cluj)
