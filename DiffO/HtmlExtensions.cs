@@ -35,6 +35,32 @@ namespace DiffO
             throw new Exception("Model does not implement IDiffOject");
         }
 
+        public static object GetPropertyDiffOldValue<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression)
+        {
+            var propertyName = ExpressionHelper.GetExpressionText(expression);
+            var model = helper.ViewData.Model as IDiffObject;
+
+            if (model != null)
+            {
+                var differences = model.Get<object>(propertyName);
+                    
+                if (differences != null)
+                {
+                    var difference = differences.FirstOrDefault();
+
+                    if (difference != null)
+                    {
+                        return difference.OldValue;
+                    }
+                }
+            }
+            else
+            {
+                throw new Exception("Model does not implement IDiffOject");
+            }
+            return DifferenceType.None;
+        }
+
         public static DifferenceType GetPropertyDiffType<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression)
         {
             var propertyName = ExpressionHelper.GetExpressionText(expression);
@@ -61,16 +87,16 @@ namespace DiffO
             return DifferenceType.None;
         }
 
-        public static string GetPropertyDiffColor<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression)
+        public static string GetPropertyDiffStyle<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression)
         {
             switch (GetPropertyDiffType(helper, expression))
             {
                 case DifferenceType.Removed:
-                    return "red";
+                    return "text-decoration: line-through; color: red";
                 case DifferenceType.Modified:
-                    return "yellow";
+                    return "background-color: yellow";
                 case DifferenceType.Added:
-                    return "green";
+                    return "background-color: green";
                 default:
                     return "";
             }

@@ -3,7 +3,24 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<style>
+    body {
+        font-family: segoe ui;
+    }
+    ul {
+        list-style-type: none;
+    }    
+    ul li {
+        padding: 5px;
+        margin: 2px;
+        border: 1px solid grey;
+    }
+</style>
+
+
+<h2>Demo</h2>
+
+<a href="@Url.Action("Index", new { reverse = !Model.Reverse })">Reverse Compare</a>
 
 @Html.Partial("_Zoo", Model.Bucharest)
 

@@ -2,7 +2,7 @@
 @using DiffO
 
 <ul>
-    <li style="background-color: @Html.GetPropertyDiffColor(x => x.Name)">@Model.Name</li>
+    <li style="@Html.GetPropertyDiffStyle(x => x.Name)">@Model.Name</li>
     @if (Model.Child != null)
     {
         <li>@Html.Partial("_Lion", Model.Child)</li>

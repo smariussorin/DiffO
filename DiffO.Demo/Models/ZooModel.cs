@@ -7,6 +7,7 @@ namespace DiffO.Demo.Models
 {
     public class DemoViewModel
     {
+        public bool Reverse { get; set; }
         public ZooModel Bucharest { get; set; }
         public ZooModel Cluj { get; set; }
     }

@@ -10,7 +10,7 @@ namespace DiffO.Demo.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(bool reverse = false)
         {
             var bucharestZoo = new ZooModel
             {
@@ -98,10 +98,18 @@ namespace DiffO.Demo.Controllers
                 }
             };
 
-            bucharestZoo.CompareTo(clujZoo);
+            if (reverse)
+            {
+                bucharestZoo.CompareTo(clujZoo);
+            }
+            else
+            {
+                clujZoo.CompareTo(bucharestZoo);
+            }
 
             return View(new DemoViewModel
                             {
+                                Reverse = reverse,
                                 Bucharest = bucharestZoo,
                                 Cluj = clujZoo
                             });
