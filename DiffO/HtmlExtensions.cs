@@ -58,7 +58,7 @@ namespace DiffO
             {
                 throw new Exception("Model does not implement IDiffOject");
             }
-            return DifferenceType.None;
+            return null;
         }
 
         public static DifferenceType GetPropertyDiffType<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression)
