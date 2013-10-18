@@ -18,11 +18,11 @@
         <ul>
             @foreach(var bird in Model.Birds)
             {
-                <li style="background-color: @(addedBirds.Any(x => x.Equals(bird)) ? "green" : "")">@Html.Partial("_Bird", bird)</li>
+                <li style="background-color: @(addedBirds.Any(x => x.Equals(bird)) ? "YellowGreen" : "")">@Html.Partial("_Bird", bird)</li>
             }
             @foreach (var bird in removedBirds)
             {
-                <li style="background-color: red">@Html.Partial("_Bird", bird)</li>
+                <li style="text-decoration: line-through; color: red">@Html.Partial("_Bird", bird)</li>
             }
         </ul>
     </li>

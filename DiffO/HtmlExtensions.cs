@@ -94,9 +94,9 @@ namespace DiffO
                 case DifferenceType.Removed:
                     return "text-decoration: line-through; color: red";
                 case DifferenceType.Modified:
-                    return "background-color: yellow";
+                    return "background-color: Khaki";
                 case DifferenceType.Added:
-                    return "background-color: green";
+                    return "background-color: YellowGreen";
                 default:
                     return "";
             }
