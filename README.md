@@ -11,7 +11,7 @@ Its usage is very simple. All you have to do, is to inherit your models from <co
 void CompareTo<T>(this T current, T previous) where T : IDiffObject
 ```
 
-##Html helpers:
+###Html helpers:
 
 ```
 List<object> GetListPropertyDiff<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression, DifferenceType type)
@@ -50,7 +50,7 @@ Example:
 object GetPropertyDiffOldValue<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression);
 ```
 
->If a certain property's value has been removed, call this method to get the old value.
+> If a certain property's value has been removed, call this method to get the old value.
 
 Example:
 
