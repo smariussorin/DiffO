@@ -1,5 +1,9 @@
 ======
-DiffO library is specifically designed for ASP.NET MVC, containing a set of Html helpers for marking the differences in the view.
+###Deep compare two objects
+
+---------------------------------------
+
+<code>DiffO library</code> is specifically designed for <code>ASP.NET MVC</code>, containing a set of <code>Html helpers</code> for marking the differences in the view.
 
 Its usage is very simple. All you have to do, is to inherit your models from <code> DiffObject</code> and call the <code>CompareTo()</code> method. Calling the method, will iterate through the objects properties and if it finds properties that also inherit <code>DiffObject</code> compares them as well.
 
@@ -13,7 +17,7 @@ void CompareTo<T>(this T current, T previous) where T : IDiffObject
 List<object> GetListPropertyDiff<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression, DifferenceType type)
 ```
 
->Use for list property. The <code>type</code> parameter specifies whether to get the added or removed items.
+> Use for list property. The <code>type</code> parameter specifies whether to get the added or removed items.
 
 Example:
 
@@ -31,7 +35,7 @@ var removed = Html.GetListPropertyDiff(x => x.Items, DifferenceType.Removed)
 string GetPropertyDiffStyle<TModel, TKey>(this HtmlHelper<TModel> helper, Expression<Func<TModel, TKey>> expression);
 ```
 
-> Based on the difference type (modified, removed, added) calling this method will return a specific style
+> Based on the difference type (modified, removed, added) calling this method will return a css specific style
 
 Example:
 
