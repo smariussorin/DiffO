@@ -45,7 +45,6 @@ namespace DiffO
                            Type = type,
                            Prop = propName
                        };
-
         }
     }
 }

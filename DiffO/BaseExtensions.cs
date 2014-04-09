@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,9 +10,10 @@ namespace DiffO
 {
     public static class BaseExtensions
     {
-        public static void CompareTo<T>(this T current, T previous) where T : IDiffObject
+        public static void CompareTo<T>(this T current, T previous, params string[] ignoreProps) where T : IDiffObject
         {
-            var props = current.GetType().GetProperties();
+            var props = current.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(
+                  p => p.CanRead && !ignoreProps.Contains(p.Name));
 
             foreach (var prop in props)
             {
@@ -19,48 +21,7 @@ namespace DiffO
                 var previousValue = prop.GetValue(previous);
                 var propName = prop.Name;
 
-                if (prop.PropertyType != typeof(string) && prop.PropertyType.IsClass)
-                {
-                    var currentEnumerable = currentValue as IEnumerable<object>;
-
-                    if (currentEnumerable == null)
-                    {
-                        var currentValue2 = currentValue as IDiffObject;
-
-                        if (currentValue2 != null)
-                        {
-                            var previousValue2 = previousValue as IDiffObject;
-
-                            if (previousValue2 != null)
-                            {
-                                currentValue2.CompareTo(previousValue2);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        var previousEnumerable = previousValue as IEnumerable<object>;
-
-                        if (previousEnumerable != null)
-                        {
-                            var currentList = currentEnumerable as List<object> ?? currentEnumerable.ToList();
-                            var previousList = previousEnumerable as List<object> ?? previousEnumerable.ToList();
-
-                            var diffList = new List<Difference<List<object>>>();
-
-                            var diff = current.CreateDifference(propName, DifferenceType.Added, currentList.Except(previousList).ToList(), null);
-
-                            diffList.Add(diff);
-
-                            diff = current.CreateDifference(propName, DifferenceType.Removed, null, previousList.Except(currentList).ToList());
-
-                            diffList.Add(diff);
-
-                            current.Add(propName, diffList);
-                        }
-                    }
-                }
-                else
+                if (CanDirectlyCompare(prop.PropertyType))
                 {
                     var type = DifferenceType.None;
 
@@ -86,7 +47,46 @@ namespace DiffO
                         current.Add(propName, new List<Difference<object>> { diff });
                     }
                 }
+                else if (typeof(IEnumerable).IsAssignableFrom(prop.PropertyType))
+                {
+                    var currentEnumerable = currentValue as IEnumerable<object>;
+                    var previousEnumerable = previousValue as IEnumerable<object>;
+
+                    var currentList = currentEnumerable as List<object> ?? currentEnumerable.ToList();
+                    var previousList = previousEnumerable as List<object> ?? previousEnumerable.ToList();
+
+                    var diffList = new List<Difference<List<object>>>();
+
+                    var diff = current.CreateDifference(propName, DifferenceType.Added, currentList.Except(previousList).ToList(), null);
+
+                    diffList.Add(diff);
+
+                    diff = current.CreateDifference(propName, DifferenceType.Removed, null, previousList.Except(currentList).ToList());
+
+                    diffList.Add(diff);
+
+                    current.Add(propName, diffList);    
+                }
+                else
+                {
+                    var currentValue2 = currentValue as IDiffObject;
+
+                    if (currentValue2 != null)
+                    {
+                        var previousValue2 = previousValue as IDiffObject;
+
+                        if (previousValue2 != null)
+                        {
+                            currentValue2.CompareTo(previousValue2, ignoreProps);
+                        }
+                    }
+                }
             }
+        }
+
+        private static bool CanDirectlyCompare(Type type)
+        {
+            return typeof(IComparable).IsAssignableFrom(type) || type.IsPrimitive || type.IsValueType;
         }
     }
 }
